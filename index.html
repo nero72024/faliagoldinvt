@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+ <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
     <meta charset="UTF-8">
@@ -52,6 +52,36 @@
             }
         }
 
+        /* باکس آدرس در بالای کارت دعوت */
+        .address-banner {
+            position: absolute;
+            top: 25px;
+            left: 20px;
+            right: 20px;
+            background: rgba(17, 26, 22, 0.85);
+            border: 1px solid rgba(212, 175, 55, 0.4);
+            border-radius: 12px;
+            padding: 10px 14px;
+            text-align: center;
+            color: #f3e5ab;
+            font-size: 0.82rem;
+            line-height: 1.6;
+            backdrop-filter: blur(8px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.5);
+            z-index: 45;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+            pointer-events: none;
+        }
+
+        /* ظاهر شدن آدرس پس از باز شدن پاکت */
+        .scene-viewport.opened ~ .address-banner {
+            opacity: 1;
+            transform: translateY(0);
+            transition-delay: 0.6s;
+        }
+
         /* کانتینر اصلی صحنه ۳بعدی */
         .scene-viewport {
             width: 100%;
@@ -97,17 +127,17 @@
         /* برگه دعوت‌نامه سبز رنگ (مشخصات ۳بعدی تا شدن) */
         .card-wrapper {
             position: absolute;
-            width: 84%;
-            max-width: 320px;
+            width: 82%;
+            max-width: 310px;
             z-index: 10;
             opacity: 0;
             transform-style: preserve-3d;
-            /* حالت اولیه: تاخورده از وسط و داخل پاکت */
             transform: translateY(80px) scale(0.75) rotateX(-75deg);
             transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1), 
                         opacity 0.8s ease;
             transform-origin: center center;
             filter: drop-shadow(0 20px 40px rgba(0, 0, 0, 0.7));
+            margin-top: 25px; /* تنظیم فاصله از آدرس بالای کارت */
         }
 
         .card-wrapper img {
@@ -118,9 +148,7 @@
             border: 1px solid rgba(212, 175, 55, 0.3);
         }
 
-        /* --- حالات انیمیشن بعد از کلیک (حالت باز شده) --- */
-
-        /* ۱. پاکت محو شده و پایین می‌رود */
+        /* حالت باز شده */
         .scene-viewport.opened .envelope-box {
             animation: none;
             transform: translateY(140px) scale(0.85);
@@ -129,7 +157,6 @@
             pointer-events: none;
         }
 
-        /* ۲. کارت دعوت بیرون آمده، باز شده و روی صفحه مستقر می‌شود */
         .scene-viewport.opened .card-wrapper {
             opacity: 1;
             z-index: 30;
@@ -140,12 +167,12 @@
         /* راهنمای متنی کلیک */
         .tap-instruction {
             position: absolute;
-            bottom: 45px;
+            bottom: 80px;
             left: 0;
             right: 0;
             text-align: center;
             color: #d4af37;
-            font-size: 0.95rem;
+            font-size: 0.9rem;
             font-weight: 500;
             letter-spacing: 0.5px;
             transition: opacity 0.5s ease, transform 0.5s ease;
@@ -153,6 +180,7 @@
             z-index: 40;
             text-shadow: 0 2px 10px rgba(0,0,0,0.8);
             animation: pulseText 2s infinite;
+            padding: 0 15px;
         }
 
         @keyframes pulseText {
@@ -168,7 +196,7 @@
         /* دکمه مشاهده مجدد (ریست) */
         .replay-btn {
             position: absolute;
-            bottom: 30px;
+            bottom: 25px;
             opacity: 0;
             pointer-events: none;
             transition: all 0.6s ease;
@@ -199,14 +227,20 @@
             
             <!-- تصویر ۱: پاکت‌نامه -->
             <div class="envelope-box" id="envelopeBox">
-                <img src="1000069251.png" alt="پاکت‌نامه فالیا گلد" onerror="this.src='https://via.placeholder.com/400x500/d4af37/000000?text=Envelope+Image+Not+Found'">
+                <img src="1000069251.png" alt="پاکت‌نامه فالیا گلد">
             </div>
 
-            <!-- تصویر ۲: برگه دعوت‌نامه سبز رنگ (با قابلیت باز شدن ۳بعدی) -->
+            <!-- تصویر ۲: برگه دعوت‌نامه سبز رنگ -->
             <div class="card-wrapper" id="cardWrapper">
-                <img src="1000069250.png" alt="دعوت‌نامه فالیا گلد" onerror="this.src='https://via.placeholder.com/400x500/0b3b24/ffffff?text=Invitation+Card+Not+Found'">
+                <img src="1000069250.png" alt="دعوت‌نامه فالیا گلد">
             </div>
 
+        </div>
+
+        <!-- آدرس گالری (در بالای صفحه) -->
+        <div class="address-banner">
+            <div class="font-bold text-yellow-400 mb-0.5">📍 آدرس گالری:</div>
+            <div>خیابان امامزاده - پاساژ امیر - طبقه همکف - گالری طلا فالیا گلد</div>
         </div>
 
         <!-- متن راهنمای ورودی -->
@@ -214,8 +248,8 @@
             <span>✨ برای باز کردن پاکت‌نامه لمس کنید ✨</span>
         </div>
 
-        <!-- دکمه مشاهده مجدد انیمیشن -->
-        <button class="replay-btn px-5 py-2.5 rounded-full text-xs font-medium tracking-wide shadow-lg" onclick="resetEnvelope()">
+        <!-- دکمه مشاهده مجدد -->
+        <button class="replay-btn px-5 py-2 rounded-full text-xs font-medium tracking-wide shadow-lg" onclick="resetEnvelope()">
             نمایش مجدد ↺
         </button>
 
